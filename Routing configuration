@@ -1,0 +1,5 @@
+const routes = [
+  { path: '/', name: 'Home', component: HomePage },
+  { path: '/cart', name: 'Cart', component: CartPage },
+  { path: '/product/:id', name: 'ProductDetail', component: ProductDetailPage },
+];
