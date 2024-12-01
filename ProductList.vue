@@ -33,6 +33,11 @@
             <option value="availableSpaces">Spaces</option>
           </select>
         </div>
+        <div class="col-md-6">
+          <button @click="toggleSortOrder" class="btn btn-secondary">
+            Toggle Order ({{ sortOrder }})
+          </button>
+        </div>
       </div>
       <div class="row">
         <div class="col-md-4" v-for="product in filteredProducts" :key="product.id">
@@ -66,6 +71,7 @@ export default {
       currentView: 'lessons', // Tracks whether to show lessons or cart
       searchQuery: '',
       sortOption: '',
+      sortOrder: 'ascending', // Default sort order
       filteredProducts: [],
     };
   },
@@ -96,13 +102,19 @@ export default {
       const sortKey = this.sortOption;
       if (sortKey) {
         this.filteredProducts.sort((a, b) => {
+          let comparison = 0;
           if (typeof a[sortKey] === 'string') {
-            return a[sortKey].localeCompare(b[sortKey]);
+            comparison = a[sortKey].localeCompare(b[sortKey]);
           } else if (typeof a[sortKey] === 'number') {
-            return a[sortKey] - b[sortKey];
+            comparison = a[sortKey] - b[sortKey];
           }
+          return this.sortOrder === 'ascending' ? comparison : -comparison;
         });
       }
+    },
+    toggleSortOrder() {
+      this.sortOrder = this.sortOrder === 'ascending' ? 'descending' : 'ascending';
+      this.sortProducts(); // Reapply sorting when the order is toggled
     },
   },
   watch: {
@@ -116,3 +128,4 @@ export default {
   },
 };
 </script>
+
